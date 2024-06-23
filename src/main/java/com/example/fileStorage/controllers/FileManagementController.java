@@ -1,10 +1,11 @@
 package com.example.fileStorage.controllers;
 
 import com.example.fileStorage.dtos.FileDTO;
-import com.example.fileStorage.models.File;
-import com.example.fileStorage.models.User;
+import com.example.fileStorage.exceptions.UserNotFoundException;
 import com.example.fileStorage.services.FileManagementService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -22,7 +23,8 @@ public class FileManagementController {
     }
 
     //    Getting all files by username
-    private List<FileDTO> getAllFilesByUsername(Long userId) {
-        return fileManagementService.getAllFilesByUsername(userId);
+    @GetMapping("{id}")
+    private List<FileDTO> getAllFilesByUser(@PathVariable ("id") Long userId) throws UserNotFoundException {
+        return fileManagementService.getAllFilesByUser(userId);
     }
 }

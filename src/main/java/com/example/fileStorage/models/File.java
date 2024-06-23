@@ -10,6 +10,7 @@ import lombok.Setter;
 @Setter
 public class File extends BaseModel{
 
+    private String fileName;
     private String contentType;
     private String url;
     private Long size;

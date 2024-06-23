@@ -10,6 +10,7 @@ import lombok.Setter;
 @Entity
 public class VersionedFile extends BaseModel{
 
+    private String fileName;
     private String contentType;
     private String url;
     private Long size;

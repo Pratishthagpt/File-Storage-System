@@ -8,6 +8,7 @@ import lombok.Setter;
 public class FileDTO {
 
     private Long id;
+    private String filename;
     private String contentType;
     private String url;
     private Long size;
