@@ -19,4 +19,15 @@ public class GlobalExceptionHandler {
                 HttpStatus.NOT_FOUND
         );
     }
+
+
+    @ExceptionHandler(InvalidPasswordException.class)
+    public ResponseEntity<ExceptionDTO> handleInvalidPasswordException (
+            InvalidPasswordException invalidPasswordException
+    ) {
+        return new ResponseEntity<>(
+                new ExceptionDTO(HttpStatus.NOT_FOUND, invalidPasswordException.getMessage()),
+                HttpStatus.NOT_FOUND
+        );
+    }
 }

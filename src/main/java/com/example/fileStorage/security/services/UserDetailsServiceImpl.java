@@ -32,7 +32,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
         User user = userOptional.get();
 
-        return (UserDetails) user;
+        return new CustomUserDetail(user);
     }
 
 }

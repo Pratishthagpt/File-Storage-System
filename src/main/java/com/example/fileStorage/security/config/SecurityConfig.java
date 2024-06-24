@@ -3,6 +3,7 @@ package com.example.fileStorage.security.config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -12,12 +13,6 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 public class SecurityConfig {
 
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
-
-    public SecurityConfig(BCryptPasswordEncoder bCryptPasswordEncoder) {
-        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
-    }
-
     @Bean
     public SecurityFilterChain securityFilterChain (HttpSecurity http) throws Exception {
 
@@ -26,11 +21,7 @@ public class SecurityConfig {
                         .requestMatchers("/").permitAll()
                         .anyRequest().authenticated()
                 )
-                .formLogin((form) -> form
-                    .loginPage("/api")
-                    .permitAll()
-                )
-                .logout((logout) -> logout.permitAll());
+                .formLogin(Customizer.withDefaults());
 
         http.cors().disable();
         http.csrf().disable();
@@ -39,7 +30,7 @@ public class SecurityConfig {
     }
 
     @Bean
-    public BCryptPasswordEncoder passwordEncoder () {
+    public BCryptPasswordEncoder bCryptPasswordEncoder () {
         return new BCryptPasswordEncoder();
     }
 }
