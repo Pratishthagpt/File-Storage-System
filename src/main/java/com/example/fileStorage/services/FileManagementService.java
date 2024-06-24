@@ -8,12 +8,15 @@ import com.example.fileStorage.models.User;
 import com.example.fileStorage.repositories.FileRepository;
 import com.example.fileStorage.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -25,7 +28,7 @@ import java.util.Optional;
 @Service
 public class FileManagementService {
 
-    private final Path rootLocation = Paths.get("uploads");
+    private final Path rootLocation = Paths.get("D:\\uploads");
 
     private UserRepository userRepository;
     private FileRepository fileRepository;
@@ -104,5 +107,25 @@ public class FileManagementService {
 
         FileDTO fileDTO = convertFileTOFileDTO(savedFile);
         return fileDTO;
+    }
+
+    public Resource downloadFile(String filename) {
+        try {
+            File file = fileRepository.findByFileName(filename);
+
+            Path filePath = rootLocation.resolve(filename);
+            Resource resource = new UrlResource(filePath.toUri());
+
+            if (resource.exists() || resource.isReadable()) {
+                return resource;
+            }
+            else {
+                throw new RuntimeException("Could not read file: " + filename);
+            }
+        }
+        catch (MalformedURLException e) {
+            throw new RuntimeException("Could not read file: " + filename);
+        }
+
     }
 }

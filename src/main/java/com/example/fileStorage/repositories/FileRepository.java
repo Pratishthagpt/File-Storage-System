@@ -11,4 +11,5 @@ import java.util.List;
 public interface FileRepository extends JpaRepository<File, Long> {
 
     public List<File> findByUser(User user);
+    public File findByFileName(String fileName);
 }
