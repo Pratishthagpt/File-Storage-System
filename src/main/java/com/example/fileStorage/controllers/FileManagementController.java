@@ -55,4 +55,14 @@ public class FileManagementController {
                 .header(HttpHeaders.CONTENT_DISPOSITION, headers)
                 .body(resource);
     }
+
+    @PostMapping("share/{filename}")
+    public ResponseEntity<SuccessResponseDto> shareFile(@PathVariable("filename") String filename, @RequestParam String username) {
+        fileManagementService.shareFile(filename, username);
+
+        return new ResponseEntity<>(
+                new SuccessResponseDto(HttpStatus.OK, "File shared successfully")
+                , HttpStatus.OK
+        );
+    }
 }

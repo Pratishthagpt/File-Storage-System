@@ -1,9 +1,10 @@
 package com.example.fileStorage.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.Set;
 
 @Entity
 @Getter
@@ -17,5 +18,13 @@ public class File extends BaseModel{
 
     @ManyToOne
     private User user;
+
+    @ManyToMany
+    @JoinTable(
+            name = "file_shared_users",
+            joinColumns = @JoinColumn(name = "file_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id")
+    )
+    private Set<User> sharedFilesWith;
 
 }

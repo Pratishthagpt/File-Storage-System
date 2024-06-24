@@ -111,7 +111,13 @@ public class FileManagementService {
 
     public Resource downloadFile(String filename) {
         try {
-            File file = fileRepository.findByFileName(filename);
+            Optional<File> fileOptional = fileRepository.findByFileName(filename);
+
+            if (fileOptional.isEmpty()) {
+                throw new FileNotFoundException("File with filename - " + filename + " not found.");
+            }
+
+            File file = fileOptional.get();
 
             Path filePath = rootLocation.resolve(filename);
             Resource resource = new UrlResource(filePath.toUri());
@@ -123,9 +129,39 @@ public class FileManagementService {
                 throw new RuntimeException("Could not read file: " + filename);
             }
         }
-        catch (MalformedURLException e) {
+        catch (MalformedURLException | FileNotFoundException e) {
             throw new RuntimeException("Could not read file: " + filename);
         }
+    }
+
+    public void shareFile(String filename, String username) throws FileNotFoundException, UserNotFoundException {
+        try {
+            Optional<File> fileOptional = fileRepository.findByFileName(filename);
+
+            if (fileOptional.isEmpty()) {
+                throw new FileNotFoundException("File with filename - " + filename + " not found.");
+            }
+
+            File file = fileOptional.get();
+
+            Optional<User> userOptional = userRepository.findByUsername(username);
+
+            if (userOptional.isEmpty()) {
+                throw new UserNotFoundException("User with username - " + username + " not found.");
+            }
+            User user = userOptional.get();
+
+            file.getSharedFilesWith().add(user);
+            fileRepository.save(file);
+        }
+        catch (FileNotFoundException e) {
+            throw new RuntimeException("File not found: " + filename);
+        }
+    }
+
+    public List<Files> getAllFilesSharedWith (Long userid) {
 
     }
+
+
 }
