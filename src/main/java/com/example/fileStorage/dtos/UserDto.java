@@ -10,7 +10,6 @@ public class UserDto {
 
     private Long id;
     private String username;
-    private String password;
 
     public static UserDto fromUser (User user) {
         UserDto userDto = new UserDto();
