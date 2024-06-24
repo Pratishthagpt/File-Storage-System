@@ -5,6 +5,7 @@ import com.example.fileStorage.dtos.LoginRequestDto;
 import com.example.fileStorage.dtos.SuccessResponseDto;
 import com.example.fileStorage.dtos.UserDto;
 import com.example.fileStorage.exceptions.UserNotFoundException;
+import com.example.fileStorage.models.File;
 import com.example.fileStorage.services.FileManagementService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
@@ -14,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
 
@@ -57,12 +59,17 @@ public class FileManagementController {
     }
 
     @PostMapping("share/{filename}")
-    public ResponseEntity<SuccessResponseDto> shareFile(@PathVariable("filename") String filename, @RequestParam String username) {
+    public ResponseEntity<SuccessResponseDto> shareFile(@PathVariable("filename") String filename, @RequestParam String username) throws UserNotFoundException, FileNotFoundException {
         fileManagementService.shareFile(filename, username);
 
         return new ResponseEntity<>(
                 new SuccessResponseDto(HttpStatus.OK, "File shared successfully")
                 , HttpStatus.OK
         );
+    }
+
+    @GetMapping("/share-with/{id}")
+    public List<File> getAllFilesSharedWith(@PathVariable("id") Long userId) {
+        return fileManagementService.getAllFilesSharedWith(userId);
     }
 }

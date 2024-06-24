@@ -136,6 +136,7 @@ public class FileManagementService {
 
     public void shareFile(String filename, String username) throws FileNotFoundException, UserNotFoundException {
         try {
+//            get File by filename
             Optional<File> fileOptional = fileRepository.findByFileName(filename);
 
             if (fileOptional.isEmpty()) {
@@ -144,6 +145,7 @@ public class FileManagementService {
 
             File file = fileOptional.get();
 
+//            get user by username
             Optional<User> userOptional = userRepository.findByUsername(username);
 
             if (userOptional.isEmpty()) {
@@ -159,8 +161,26 @@ public class FileManagementService {
         }
     }
 
-    public List<Files> getAllFilesSharedWith (Long userid) {
+    public List<File> getAllFilesSharedWith (Long userid) throws UserNotFoundException {
+        List<File> files = fileRepository.findAll();
 
+//        get user by id
+        Optional<User> userOptional = userRepository.findById(userid);
+
+        if (userOptional.isEmpty()) {
+            throw new UserNotFoundException("User with id - " + userid + " not found.");
+        }
+        User user = userOptional.get();
+
+//        find all the files that contains the user as shared user
+        List<File> sharedFiles = new ArrayList<>();
+        for (File file : files) {
+            if (file.getSharedFilesWith().contains(user)) {
+                sharedFiles.add(file);
+            }
+        }
+
+        return sharedFiles;
     }
 
 
