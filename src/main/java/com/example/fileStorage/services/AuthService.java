@@ -39,4 +39,22 @@ public class AuthService {
 
         return UserDto.fromUser(user);
     }
+
+    public UserDto signupUser(String username, String password) {
+        Optional<User> userOptional = userRepository.findByUsername(username);
+
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            return UserDto.fromUser(user);
+        }
+
+        User user = new User();
+        user.setUsername(username);
+        user.setPassword(bCryptPasswordEncoder.encode(password));
+
+        User savedUser = userRepository.save(user);
+
+        return UserDto.fromUser(user);
+
+    }
 }

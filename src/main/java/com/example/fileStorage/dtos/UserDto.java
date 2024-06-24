@@ -16,7 +16,6 @@ public class UserDto {
         UserDto userDto = new UserDto();
         userDto.setId(user.getId());
         userDto.setUsername(user.getUsername());
-        userDto.setPassword(user.getPassword());
 
         return userDto;
     }

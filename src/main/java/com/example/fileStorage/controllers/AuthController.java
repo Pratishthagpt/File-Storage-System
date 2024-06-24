@@ -1,6 +1,7 @@
 package com.example.fileStorage.controllers;
 
 import com.example.fileStorage.dtos.LoginRequestDto;
+import com.example.fileStorage.dtos.SignupRequestDto;
 import com.example.fileStorage.dtos.UserDto;
 import com.example.fileStorage.exceptions.InvalidPasswordException;
 import com.example.fileStorage.exceptions.UserNotFoundException;
@@ -31,6 +32,10 @@ public class AuthController {
         return new ResponseEntity<>(userDto, HttpStatus.OK);
     }
 
+    @PostMapping("/signup")
+    public ResponseEntity<UserDto> signupUser (@RequestBody SignupRequestDto requestDto) {
+        UserDto userDto = authService.signupUser(requestDto.getUsername(), requestDto.getPassword());
 
-
+        return new ResponseEntity<>(userDto, HttpStatus.OK);
+    }
 }
