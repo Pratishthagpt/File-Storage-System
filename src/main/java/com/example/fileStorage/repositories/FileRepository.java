@@ -13,4 +13,6 @@ public interface FileRepository extends JpaRepository<File, Long> {
 
     public List<File> findByUser(User user);
     public Optional<File> findByFileName(String fileName);
+
+    public File findByFileNameAndUser(String filename, User user);
 }

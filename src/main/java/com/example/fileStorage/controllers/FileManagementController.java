@@ -69,7 +69,8 @@ public class FileManagementController {
     }
 
     @GetMapping("/share-with/{id}")
-    public List<File> getAllFilesSharedWith(@PathVariable("id") Long userId) {
+    public List<File> getAllFilesSharedWith(@PathVariable("id") Long userId) throws UserNotFoundException {
         return fileManagementService.getAllFilesSharedWith(userId);
     }
+
 }
